@@ -88,15 +88,29 @@ public class Votos extends Candidatos{
         this.porcentaje = porcentaje;
     }
 
+    public void aumentarVotos(int urna, int medio) {
+        switch (urna) {
+            case 1 -> votosUrna1++;
+            case 2 -> votosUrna2++;
+            case 3 -> votosUrna3++;
+        }
+        switch (medio) {
+            case 1 -> votosPorInternet++;
+            case 2 -> votosPorRadio++;
+            case 3 -> votosPorTv++;
+        }
+
+    }
+
     @Override
     public String toString() {
         return "Votos de " + nombre +
                 "\nvotosPorInternet=" + votosPorInternet +
                 "\nvotosPorTv=" + votosPorTv +
                 "\nvotosPorRadio=" + votosPorRadio +
-                "\nvotosUrna1=" + votosUrna1 +
-                "\nvotosUrna2=" + votosUrna2 +
-                "\nvotosUrna3=" + votosUrna3 +
+                "\nvotosUrnaNorte=" + votosUrna1 +
+                "\nvotosUrnaSur=" + votosUrna2 +
+                "\nvotosUrnaOccidente=" + votosUrna3 +
                 "\ntotalVotos=" + totalVotos;
     }
 }

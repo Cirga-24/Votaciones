@@ -35,7 +35,7 @@ public class Main {
         }
     }
 
-    public static void realizarVotacion() {
+    public static void realizarVotacion() throws InterruptedException {
         System.out.println("Por quien desea votar?");
         int i = 1, opc;
         for (Candidatos c : lstCandidatos) {
@@ -43,6 +43,40 @@ public class Main {
             i++;
         }
         opc = teclado.nextInt();
+        switch (opc) {
+            case 1 -> votacionEleccion(0);
+            case 2 -> votacionEleccion(1);
+            case 3 -> votacionEleccion(2);
+        }
+
+    }
+
+    public static void votacionEleccion(int candidato) throws InterruptedException {
+        Votos candidatoMod = lstCandidatos.get(candidato);
+        System.out.println("En que urna se ubica?" +
+                "\n1. Urna Norte" +
+                "\n2. Urna Sur" +
+                "\n3. Urna Occidente");
+        int urna = teclado.nextInt();
+        System.out.println("Por que medio conocio al candidato?" +
+                "\n1. Internet" +
+                "\n2. Radio" +
+                "\n3. Television");
+        int medio = teclado.nextInt();
+        candidatoMod.aumentarVotos(urna, medio);
+        System.out.println("Su voto se registro. Gracias.");
+        mostrarMenu();
+    }
+
+    public static void verEstadisticas() throws InterruptedException {
+        System.out.println("De quien desea ver las estadísticas?");
+        int i = 1, opc;
+        for (Candidatos c : lstCandidatos) {
+            System.out.println(i + ". " + c.getNombre() + "|| #" + c.getNumeral());
+            i++;
+        }
+        opc = teclado.nextInt();
+
         switch (opc) {
             case 1 -> {
                 Candidatos c = lstCandidatos.getFirst();
@@ -57,18 +91,7 @@ public class Main {
                 System.out.println(c.toString());
             }
         }
-
-    }
-
-    public static void verEstadisticas(){
-        System.out.println("De quien desea ver las estadísticas?");
-        int i = 1, opc;
-        for (Candidatos c : lstCandidatos) {
-            System.out.println(i + ". " + c.getNombre() + "|| #" + c.getNumeral());
-            i++;
-        }
-        opc = teclado.nextInt();
-
+        mostrarMenu();
     }
 
     public static void verPrecio(){
