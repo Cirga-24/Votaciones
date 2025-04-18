@@ -7,9 +7,9 @@ public class Main {
     private static List<Votos> lstCandidatos = new ArrayList<Votos>();
 
     public static void main(String[] args) throws InterruptedException{
-        Votos candidato1 = new Votos("01", "Cristian Castillo", 20, 50, 30, 15, 65, 20);
-        Votos candidato2 = new Votos("24", "Raul Vega", 20, 50, 30, 15, 65, 20);
-        Votos candidato3 = new Votos("06", "Laura Castañeda", 20, 50, 30, 15, 65, 20);
+        Votos candidato1 = new Votos("01", "Cristian Castillo", 60, 55, 40, 50, 65, 40);
+        Votos candidato2 = new Votos("24", "Raul Vega", 70, 45, 50, 60, 40, 65);
+        Votos candidato3 = new Votos("06", "Laura Castañeda", 80, 35, 45, 55, 55, 50);
         lstCandidatos.add(candidato1);
         lstCandidatos.add(candidato2);
         lstCandidatos.add(candidato3);
@@ -18,15 +18,15 @@ public class Main {
 
     public static void mostrarMenu() throws InterruptedException{
         System.out.println("Votación representante de Premier" +
-                "Desea realizar un voto o conocer las estadísticas de la votación?" +
+                "\nQue desea hacer?" +
                 "\n1. Realizar un voto" +
-                "\n2. Conocer estadísticas" +
-                "\n3. Conocer precio de la campaña");
+                "\n2. Conocer estadísticas de un candidato" +
+                "\n3. Vaciar Urnas de votacion");
         int opc = teclado.nextInt();
         switch (opc) {
             case 1 -> realizarVotacion();
             case 2 -> verEstadisticas();
-            case 3 -> verPrecio();
+            case 3 -> vaciarUrnas();
             default -> {
                 System.out.println("Esa no es una opción");
                 Thread.sleep(1000);
@@ -64,11 +64,15 @@ public class Main {
                 "\n3. Television");
         int medio = teclado.nextInt();
         candidatoMod.aumentarVotos(urna, medio);
-        System.out.println("Su voto se registro. Gracias.");
+        candidatoMod.setTotalVotos();
+        candidatoMod.setPrecioCampania();
+        System.out.println("Su voto se registro. Gracias.\n");
+        Thread.sleep(1000);
         mostrarMenu();
     }
 
     public static void verEstadisticas() throws InterruptedException {
+        int votosCandidatos = calcularTotalCandidatos();
         System.out.println("De quien desea ver las estadísticas?");
         int i = 1, opc;
         for (Candidatos c : lstCandidatos) {
@@ -76,25 +80,52 @@ public class Main {
             i++;
         }
         opc = teclado.nextInt();
-
         switch (opc) {
             case 1 -> {
-                Candidatos c = lstCandidatos.getFirst();
-                System.out.println(c.toString());
+                lstCandidatos.getFirst().setPorcentaje(votosCandidatos);
+                lstCandidatos.getFirst().setPrecioCampania();
+                System.out.println("Precio Campania: " + lstCandidatos.getFirst().getPrecioCampania() +
+                            "\nTotal Votos de todos los candidatos: " + votosCandidatos +
+                            "\nTotal Votos de " + lstCandidatos.getFirst().getNombre() + ": " + lstCandidatos.getFirst().getTotalVotos() +
+                            "\nPromedio de votos: " + lstCandidatos.getFirst().getPorcentaje() + "\n");
             }
             case 2 -> {
-                Candidatos c = lstCandidatos.get(1);
-                System.out.println(c.toString());
+                lstCandidatos.get(1).setPorcentaje(votosCandidatos);
+                lstCandidatos.get(1).setPrecioCampania();
+                System.out.println("Precio Campania: " + lstCandidatos.get(1).getPrecioCampania() +
+                        "\nTotal Votos de todos los candidatos: " + votosCandidatos +
+                        "\nTotal Votos de " + lstCandidatos.get(1).getNombre() + ": " + lstCandidatos.get(1).getTotalVotos() +
+                        "\nPromedio de votos: " + lstCandidatos.get(1).getPorcentaje() + "\n");
             }
             case 3 -> {
-                Candidatos c = lstCandidatos.get(2);
-                System.out.println(c.toString());
+                lstCandidatos.getLast().setPorcentaje(votosCandidatos);
+                lstCandidatos.getLast().setPrecioCampania();
+                System.out.println("Precio Campania: " + lstCandidatos.getLast().getPrecioCampania() +
+                        "\nTotal Votos de todos los candidatos: " + votosCandidatos +
+                        "\nTotal Votos de " + lstCandidatos.getLast().getNombre() + ": " + lstCandidatos.getLast().getTotalVotos() +
+                        "\nPromedio de votos: " + lstCandidatos.getLast().getPorcentaje() + "\n");
             }
         }
+        Thread.sleep(3000);
         mostrarMenu();
     }
 
-    public static void verPrecio(){
+    public static int calcularTotalCandidatos() {
+        int votosCandidatos = 0;
+        for (int i = 0; i < 3; i++) {
+            votosCandidatos += lstCandidatos.get(i).getTotalVotos();
+        }
+        return votosCandidatos;
+    }
 
+    public static void vaciarUrnas() throws InterruptedException {
+        for (int i = 0; i < 3; i++) {
+            lstCandidatos.get(i).vaciarUrnas();
+            lstCandidatos.get(i).setTotalVotos();
+            lstCandidatos.get(i).setPorcentaje(0);
+        }
+        System.out.println("Se han vaciado las Urnas de votacion\n");
+        Thread.sleep(3000);
+        mostrarMenu();
     }
 }

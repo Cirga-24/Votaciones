@@ -68,7 +68,7 @@ public class Votos extends Candidatos{
         return totalVotos;
     }
 
-    public void setTotalVotos(int totalVotos) {
+    public void setTotalVotos() {
         this.totalVotos = votosUrna1 + votosUrna2 + votosUrna3;
     }
 
@@ -76,7 +76,7 @@ public class Votos extends Candidatos{
         return precioCampania;
     }
 
-    public void setPrecioCampania(int precioCampania) {
+    public void setPrecioCampania() {
         this.precioCampania = ((votosPorInternet * 700000) + (votosPorRadio * 200000) + (votosPorTv * 600000));
     }
 
@@ -84,8 +84,12 @@ public class Votos extends Candidatos{
         return porcentaje;
     }
 
-    public void setPorcentaje(int porcentaje) {
-        this.porcentaje = porcentaje;
+    public void setPorcentaje(int votosTotalesCandidatos) {
+        if (votosTotalesCandidatos != 0) {
+            this.porcentaje = totalVotos * 100 / votosTotalesCandidatos;
+        } else {
+            this.porcentaje = 0;
+        }
     }
 
     public void aumentarVotos(int urna, int medio) {
@@ -99,7 +103,12 @@ public class Votos extends Candidatos{
             case 2 -> votosPorRadio++;
             case 3 -> votosPorTv++;
         }
+    }
 
+    public void vaciarUrnas() {
+        votosUrna1 = 0;
+        votosUrna2 = 0;
+        votosUrna3 = 0;
     }
 
     @Override
